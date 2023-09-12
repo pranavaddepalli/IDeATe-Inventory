@@ -1,0 +1,43 @@
+<!-- parts.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>All Parts</title>
+  <style>
+    /* CSS styling for the parts list */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      font-size: 24px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+    <div class = "part-info">
+        <br>
+     <form action="/parts" method="GET">
+        <input type="text" name="partNumber" placeholder="Enter Part Number">
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  <h1>All Parts</h1>
+  <ul>
+    <% parts.forEach(part => { %>
+      <li>
+        <a href="/parts?partNumber=<%= part.part_num %>"><%= part.short_name %></a>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>

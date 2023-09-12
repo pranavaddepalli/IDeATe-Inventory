@@ -1,0 +1,496 @@
+<!-- part.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Part Details</title>
+  <style>
+    /* CSS styling for the part details */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      font-size: 24px;
+    }
+    .part-info {
+      margin-top: 20px;
+    }
+    .label {
+      font-weight: bold;
+    }
+    .input-field {
+      margin-bottom: 10px;
+    }
+    .save-btn {
+      margin-top: 10px;
+    }
+
+    /* Assuming you have a class "confirmation-message" for the confirmation message div */
+.confirmation-msg {
+  border: 2px solid red;
+  padding: 10px;
+  margin-bottom: 20px;
+  /* Add any other desired styles for the confirmation message div */
+}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js"></script>
+
+</head>
+<body>
+
+<!-- find.ejs -->
+
+<div class = "part-info">
+    <a href="/parts">back to all parts</a><br><br>
+ <form action="/parts" method="GET">
+    <input type="text" name="partNumber" placeholder="Enter Part Number">
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+
+  <h1><%= `${part.part_num} - ${part.short_name} - ${part.location}` %></h1>
+
+  <% if (lastchangedstring !== "") { %>
+    <div class="confirmation-msg">
+      <%= lastchangedstring %>
+    </div>
+    <% } %>
+
+  <div class="part-info">
+    </div>
+    <h4>Inventory: <%= latest_inventory %> </h4>
+    <h4>Backstock: <%= latest_backstock %></h4>
+    
+</div>
+
+  <div class="record-inventory">
+    <form action="/updateinventory" method="POST">
+        <div class="input-field">
+        <label for="newInventory">Record new inventory:</label>
+        <input type="hidden" name="part_num" value="<%= part.part_num %>">
+        <input type="hidden" name="directus_id" value="<%= part.directus_id %>">
+        <input required type="number" id="newInventory" name="newInventory">
+        <span><%= part.unit %></span>
+        <button class="save-btn" type="submit">Update Inventory</button>
+        </div>
+    </form>
+
+    <div class="input-field">
+        <form action="/updatebackstock" method="POST">
+      <label for="newBackstock">Record new backstock:</label>
+      <input type="hidden" name="part_num" value="<%= part.part_num %>">
+      <input type="hidden" name="directus_id" value="<%= part.directus_id %>">
+      <input required type="number" id="newBackstock"  name="newBackstock">
+      <span><%= part.unit %></span>
+      <button class="save-btn" type="submit">Update Backstock</button>
+</form>
+    </div>
+
+    <div class="part-info">
+    </div>
+    <h4>Price: <%= latest_price %> </h4>
+    <h4>Supplier: <%= latest_supplier %></h4>
+    <h4>Purchase Link: <a href= <%=latest_purchaselink %> ><%= latest_purchaselink %></a> </h4>
+</div>
+
+  <div class="record-inventory">
+    <form action="/updatepricesupplierpurchaselink" method="POST">
+        <div class="input-field">
+        <label for="newPrice">Record new price:</label>
+        <input type="hidden" name="part_num" value="<%= part.part_num %>">
+        <input type="hidden" name="directus_id" value="<%= part.directus_id %>">
+        <span>$</span>
+        <input required type="decimal" id="newPrice" name="newPrice">
+        </div>
+
+        <% if (latest_supplier !== "No supplier history") { %>
+    <div class="input-field">
+      <label for="newBackstock">Record new supplier:</label>
+      <input required id="newSupplier"  name="newSupplier" value="<%= latest_supplier %>">
+    </div>
+    <% } else { %>
+      <div class="input-field">
+        <label for="newBackstock">Record new supplier:</label>
+        <input required id="newSupplier"  name="newSupplier">
+      </div>
+    <% } %>
+
+    <% if (latest_purchaselink !== "No purchase link") { %>
+    <div class="input-field">
+      <label for="newPurchaseLink">Record new purchase link:</label>
+      <input required id="newPurchaseLink"  name="newPurchaseLink" value="<%= latest_purchaselink %>">
+    </div>
+    <% } else { %>
+      <div class="input-field">
+        <label for="newPurchaseLink">Record new purchase link:</label>
+        <input required id="newPurchaseLink"  name="newPurchaseLink">
+      </div>
+    <% } %>
+    <button class="save-btn" type="submit">Update Price/Supplier/Purchase Link</button>
+  </form> 
+</div>
+
+<br>
+
+<h2> Total on Hand </h2> 
+  <div style="width: 600px; height: 300px;">
+    <canvas id="myChart3"></canvas>
+  </div>
+
+<h2> Inventory and Backstock History </h2> 
+  <div style="width: 600px; height: 300px;">
+    <canvas id="myChart2"></canvas>
+  </div>
+<h2> Price History </h2>
+<div style="width: 600px; height: 300px;">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  
+
+  <br><br><hr><br><br>
+
+  <div class = "all-part-info">
+    <h1> Details </h1>
+    <div class="part-info">
+        <div class="input-field">
+          <label class="label" for="shortName">Short Name:</label>
+          <span><%= part.short_name %></span>
+        </div>
+
+        <div class="input-field">
+          <label class="label" for="labeltext">Label Text:</label>
+          <span><%= part.label_text %></span>
+        </div>
+    
+        <div class="input-field">
+          <label class="label" for="location">Location:</label>
+          <span><%= part.location %></span>
+        </div>
+    
+        <div class="input-field">
+          <label class="label" for="status">Status:</label>
+          <span><%= part.status %></span>
+        </div>
+    
+        <div class="input-field">
+          <label class="label" for="minQuantity">Min Quantity:</label>
+          <span><%= part.min_quantity %></span>
+        </div>
+
+        <div class="input-field">
+          <label class="label" for="maxQuantity">Max Quantity:</label>
+          <span><%= part.max_quantity %></span>
+        </div>
+    
+        <div class="input-field">
+          <label class="label" for="unit">Unit:</label>
+          <span><%= part.unit %></span>
+        </div>
+
+        <div class="input-field">
+          <label class="label" for="description">Description:</label>
+          <span><%= part.description %></span>
+        </div>
+
+        <div class="input-field">
+          <label class="label" for="supplier_part_num">Supplier Part Number:</label>
+          <span><%= part.supplier_part_num %></span>
+        </div>
+    
+
+
+        <div class="input-field">
+          <label class="label" for="inventoryHistory">Inventory History:</label>
+          <pre><code><%= JSON.stringify(part.inventory_history, null, 2) %></code></pre>
+        </div>
+        
+        <div class="input-field">
+          <label class="label" for="backstockHistory">Backstock History:</label>
+          <pre><code><%= JSON.stringify(part.backstock_history, null, 2) %></code></pre>
+        </div>
+        
+        <div class="input-field">
+          <label class="label" for="priceHistory">Price History:</label>
+          <pre><code><%= JSON.stringify(part.price_history, null, 2) %></code></pre>
+        </div>
+        
+        <div class="input-field">
+          <label class="label" for="supplierHistory">Supplier History:</label>
+          <pre><code><%= JSON.stringify(part.supplier_history, null, 2) %></code></pre>
+        </div>
+        
+        <div class="input-field">
+          <label class="label" for="purchaseLinkHistory">Purchase Link History:</label>
+          <pre><code><%= JSON.stringify(part.purchase_link_history, null, 2) %></code></pre>
+        </div>
+        
+    
+  
+      </div>
+
+      <script>
+
+        const chartprice_dates = <%- JSON.stringify(chartprice_dates) %>;
+        const price_values = <%- JSON.stringify(price_values) %>;
+        const chartinventory_dates = <%- JSON.stringify(chartinventory_dates) %>;
+        const inventory_values = <%- JSON.stringify(inventory_values) %>;
+        const chartbackstock_dates = <%- JSON.stringify(chartbackstock_dates) %>;
+        const backstock_values = <%- JSON.stringify(backstock_values) %>;
+        const minquantity = <%- JSON.stringify(minquantity) %>;
+        const maxquantity = <%- JSON.stringify(maxquantity) %>;
+
+        const inventorybackstock_dates = [...new Set([...chartinventory_dates, ...chartbackstock_dates])];
+        inventorybackstock_dates.sort();
+
+        const realinventory_values = [];
+        // iterate through the dates in inventorybackstock_dates. if the date has a value in chartinventory_dates, use the value at the same index of inventory_values. otherwise, use the previous value.
+        for (let i = 0; i < inventorybackstock_dates.length; i++) {
+          const d = inventorybackstock_dates[i];
+          const index = chartinventory_dates.indexOf(d);
+          if (index !== -1) {
+            realinventory_values.push(parseInt(inventory_values[index]));
+          } else {
+            realinventory_values.push(parseInt(realinventory_values[i - 1]));
+          }
+        }
+        // do the same for backstock
+        const realbackstock_values = [];
+        for (let i = 0; i < inventorybackstock_dates.length; i++) {
+          const d = inventorybackstock_dates[i];
+          const index = chartbackstock_dates.indexOf(d);
+          if (index !== -1) {
+            realbackstock_values.push(parseInt(backstock_values[index]));
+          } else {
+            if(i == 0){
+              realbackstock_values.push(0);
+            }
+            else {realbackstock_values.push(parseInt(realbackstock_values[i - 1]));}
+          }
+        }
+      
+
+        // compute the total_on_hand for each date, which is backstock + inventory
+        const total_on_hand = [];
+        for (let i = 0; i < inventorybackstock_dates.length; i++) {
+          let a = 0;
+          if(realinventory_values[i] !== null){
+            a = realinventory_values[i];
+          }
+          if(realbackstock_values[i] !== null){
+            a = a + realbackstock_values[i];
+          }
+          total_on_hand.push(a);
+        }
+
+        // // number of days from the last date in inventorybackstock_dates to the first
+        // const days = moment(inventorybackstock_dates[inventorybackstock_dates.length - 1]).diff(moment(inventorybackstock_dates[0]), 'days');
+        // const delta = total_on_hand[total_on_hand.length - 1] - total_on_hand[0]
+        // document.getElementById("consumptionrate").innerHTML= (delta / days);
+        // document.getElementById("consumptiondelta").innerHTML = delta;
+        // document.getElementById("consumptiondays").innerHTML = days;
+
+        
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: chartprice_dates,
+            datasets: [{
+              label: 'Price Values',
+              data: price_values,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderWidth: 1,
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                type: 'time',
+                time: {
+                  unit: 'day',        // Display only the date without time
+                  displayFormats: {
+                    day: 'YYYY-MM-DD'
+                  },
+                  unitStepSize: 1     // One tick per day
+                },
+                title: {
+                  display: true,
+                  text: 'Date'
+                },
+                ticks: {
+                  min: chartprice_dates[0],  // Set the minimum value to the first date
+                  max: moment(chartprice_dates[chartprice_dates.length - 1]).add(1, 'day').toDate(), // Adjust max value
+                  source: 'auto',
+                }
+              },
+              y: {
+                beginAtZero: true,
+                min: 0,
+                title: {
+                  display: true,
+                  text: '$ Price'
+                },
+                ticks: {
+                  callback: function(value, index, values) {
+                    return value.toFixed(3); // Display with three decimal points
+                  }
+                }
+              }
+            }
+          }
+        });
+
+const ctx2 = document.getElementById('myChart2').getContext('2d');
+const myChart2 = new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: inventorybackstock_dates,
+    datasets: [
+      {
+        label: 'Inventory',
+        data: realinventory_values,
+        borderColor: 'rgba(192, 75, 192, 1)',
+        backgroundColor: 'rgba(192, 75, 192, 0.2)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Backstock',
+        data: realbackstock_values,
+        borderColor: 'rgba(192, 192, 75, 1)',
+        backgroundColor: 'rgba(192, 192, 75, 0.2)',
+        borderWidth: 1,
+      },
+      {
+        data: Array.apply(null, new Array(inventorybackstock_dates.length)).map(Number.prototype.valueOf, minquantity),
+        fill: false,
+        label: "Min Quantity",
+        radius: 0,
+        borderColor: 'rgba(47, 133, 0, 0.8)',
+        backgroundColor: 'rgba(47, 133, 0, 0.3)',
+        borderWidth: 2,
+      },
+      {
+        data: Array.apply(null, new Array(inventorybackstock_dates.length)).map(Number.prototype.valueOf, maxquantity),
+        fill: false,
+        label: "Max Quantity",
+        radius: 0,
+        borderColor: 'rgba(255, 0, 0, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0.8)',
+        borderWidth: 2,
+      },
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day',
+          displayFormats: {
+            day: 'YYYY-MM-DD'
+          },
+          unitStepSize: 1
+        },
+        title: {
+          display: true,
+          text: 'Date'
+        },
+        ticks: {
+          min: chartinventory_dates[0],
+          max: new Date(chartinventory_dates[chartinventory_dates.length - 1]), // Corrected line
+          source: 'auto',
+        }
+      },
+      y: {
+        beginAtZero: true,
+        min: 0,
+        title: {
+          display: true,
+          text: 'Quantity'
+        }
+      }
+    }
+    }
+});
+
+// create a graph for the total_on_hand with the minquantity and the maxquantity as horizontal bars
+const ctx3 = document.getElementById('myChart3').getContext('2d');
+const myChart3 = new Chart(ctx3, {
+  type: 'line',
+  data: {
+    labels: inventorybackstock_dates,
+    datasets: [
+      {
+        label: 'Total on Hand',
+        data: total_on_hand,
+        borderColor: 'rgba(0, 0, 0, 1)',
+        backgroundColor: 'rgba(0, 0, 0, 1)',
+        borderWidth: 1,
+      },
+      {
+        data: Array.apply(null, new Array(inventorybackstock_dates.length)).map(Number.prototype.valueOf, minquantity),
+        fill: false,
+        label: "Min Quantity",
+        radius: 0,
+        borderColor: 'rgba(47, 133, 0, 0.8)',
+        backgroundColor: 'rgba(47, 133, 0, 0.3)',
+        borderWidth: 2,
+      },
+      {
+        data: Array.apply(null, new Array(inventorybackstock_dates.length)).map(Number.prototype.valueOf, maxquantity),
+        fill: false,
+        label: "Max Quantity",
+        radius: 0,
+        borderColor: 'rgba(255, 0, 0, 1)',
+        backgroundColor: 'rgba(255, 0, 0, 0.8)',
+        borderWidth: 2,
+      },
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day',
+          displayFormats: {
+            day: 'YYYY-MM-DD'
+          },
+          unitStepSize: 1
+        },
+        title: {
+          display: true,
+          text: 'Date'
+        },
+        ticks: {
+          min: chartinventory_dates[0],
+          max: new Date(chartinventory_dates[chartinventory_dates.length - 1]), // Corrected line
+          source: 'auto',
+        }
+      },
+      y: {
+        beginAtZero: true,
+        min: 0,
+        title: {
+          display: true,
+          text: 'Quantity'
+        }
+      }
+    },
+  }
+});
+
+
+</script>
+      
+      
+      
+</body>
+</html>

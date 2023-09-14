@@ -119,7 +119,7 @@ with open('data.csv', newline='') as csvfile:
       continue
 
     data = parse_col_normal(data, currentLine, "short_name", required=True)
-    data = parse_col_normal(data, currentLine, "status", required=True, default_val="Active")
+    data = parse_col_normal(data, currentLine, "status", required=True, default_val="No Status")
     data = parse_col_normal(data, currentLine, "location", required=True, default_val="no location")
     data = parse_col_normal(data, currentLine, "unit", required=True, default_val="each")
 

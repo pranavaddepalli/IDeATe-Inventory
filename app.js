@@ -132,10 +132,10 @@ app.get('/parts', (req, res) => {
         latest_price = "$" + price_history[price_dates[price_dates.length - 1]] + " per " + part.unit + " as of " + price_dates[price_dates.length - 1];
         }
         if (part.supplier_history !== null){
-        const supplier_history = (part.supplier_history);
-        const supplier_dates = Object.keys(supplier_history);
-        supplier_dates.sort((a, b) => new Date(a) - new Date(b)).reverse();
-        latest_supplier = supplier_history[supplier_dates[supplier_dates.length - 1]];
+          const supplier_history = (part.supplier_history);
+          const supplier_dates = Object.keys(supplier_history);
+          supplier_dates.sort((a, b) => new Date(a) - new Date(b));
+          latest_supplier = supplier_history[supplier_dates[supplier_dates.length - 1]];
         }
         if (part.purchase_link_history !== null){
             const purchase_link_history = (part.purchase_link_history);
@@ -188,7 +188,8 @@ app.get('/parts', (req, res) => {
     
     axios
     .patch(`${iorefURL}/items/parts/${directus_id}?access_token=${accessToken}`, {
-        inventory_history: updatedInventoryString
+        inventory_history: updatedInventoryString,
+        current_inventory: newInventory
     })
     .then(response => {
         lastchangedfield = "inventory";
@@ -230,7 +231,8 @@ app.get('/parts', (req, res) => {
     
     axios
     .patch(`${iorefURL}/items/parts/${directus_id}?access_token=${accessToken}`, {
-        backstock_history: updatedBackstockString
+        backstock_history: updatedBackstockString,
+        current_backstock: newBackstock
     })
     .then(response => {
         lastchangedfield = "backstock";
@@ -308,7 +310,10 @@ app.get('/parts', (req, res) => {
       .patch(`${iorefURL}/items/parts/${directus_id}?access_token=${accessToken}`, {
           price_history: updatedPriceString,
           supplier_history: updatedSupplierString,
-          purchase_link_history: updatedPurchaseLinkString
+          purchase_link_history: updatedPurchaseLinkString,
+          current_price: newPrice,
+          current_supplier: newSupplier,
+          current_purchase_link: newPurchaseLink
 
 
       })

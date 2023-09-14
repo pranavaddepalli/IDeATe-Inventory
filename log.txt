@@ -1,34 +1,176 @@
+No Part Number: Skipping row 28
+No Part Number: Skipping row 42
+No Part Number: Skipping row 43
+No Part Number: Skipping row 45
+No Part Number: Skipping row 46
+No Part Number: Skipping row 47
+No Part Number: Skipping row 48
+No Part Number: Skipping row 50
+No Part Number: Skipping row 51
+No Part Number: Skipping row 69
+No Part Number: Skipping row 70
+No Part Number: Skipping row 71
+No Part Number: Skipping row 73
+No Part Number: Skipping row 74
+No Part Number: Skipping row 75
+No Part Number: Skipping row 76
+No Part Number: Skipping row 77
+No Part Number: Skipping row 78
+No Part Number: Skipping row 79
+No Part Number: Skipping row 80
+No Part Number: Skipping row 81
+No Part Number: Skipping row 82
+No Part Number: Skipping row 83
+No Part Number: Skipping row 85
+No Part Number: Skipping row 86
+No Part Number: Skipping row 87
+No Part Number: Skipping row 88
+No Part Number: Skipping row 89
+No Part Number: Skipping row 100
+No Part Number: Skipping row 108
+No Part Number: Skipping row 129
+No Part Number: Skipping row 132
+No Part Number: Skipping row 149
+No Part Number: Skipping row 156
+No Part Number: Skipping row 161
 Malformed date split: date is improperly formatted on item #0322 inventory5 : 
-Malformed cell split: could not find both count and date on item #0340 inventory6 : 55/7/29/19
-Malformed date split: date is improperly formatted on item #0356 back_stock6 : (0inA5)11/30/2020
-Malformed cell split: could not find both count and date on item # inventory1 : #REF!
-Malformed cell split: could not find both count and date on item # inventory2 : #REF!
+No Part Number: Skipping row 176
+No Part Number: Skipping row 188
+No Part Number: Skipping row 214
+No Part Number: Skipping row 215
+No Part Number: Skipping row 216
+No Part Number: Skipping row 217
+No Part Number: Skipping row 221
+No Part Number: Skipping row 225
+No Part Number: Skipping row 233
+No Part Number: Skipping row 234
+No Part Number: Skipping row 239
+No Part Number: Skipping row 240
+No Part Number: Skipping row 241
+No Part Number: Skipping row 243
+No Part Number: Skipping row 244
+No Part Number: Skipping row 245
+No Part Number: Skipping row 246
+No Part Number: Skipping row 249
+No Part Number: Skipping row 250
+No Part Number: Skipping row 252
+No Part Number: Skipping row 255
+No Part Number: Skipping row 256
+No Part Number: Skipping row 258
+No Part Number: Skipping row 259
+No Part Number: Skipping row 269
+No Part Number: Skipping row 292
+No Part Number: Skipping row 293
+No Part Number: Skipping row 294
+No Part Number: Skipping row 295
+No Part Number: Skipping row 296
+No Part Number: Skipping row 297
+No Part Number: Skipping row 298
+No Part Number: Skipping row 299
+No Part Number: Skipping row 307
+No Part Number: Skipping row 309
+No Part Number: Skipping row 313
+No Part Number: Skipping row 314
+No Part Number: Skipping row 321
+No Part Number: Skipping row 322
+No Part Number: Skipping row 323
+No Part Number: Skipping row 324
+No Part Number: Skipping row 325
+No Part Number: Skipping row 327
+No Part Number: Skipping row 331
+No Part Number: Skipping row 332
+No Part Number: Skipping row 334
+No Part Number: Skipping row 335
+No Part Number: Skipping row 341
+No Part Number: Skipping row 348
+No Part Number: Skipping row 354
+No Part Number: Skipping row 372
+No Part Number: Skipping row 376
 Malformed date split: date is improperly formatted on item #0696 back_stock4 : RECOUNT
-Malformed date split: date is improperly formatted on item #0874 inventory13 : 3/220
+No Part Number: Skipping row 425
+No Part Number: Skipping row 426
+No Part Number: Skipping row 427
+No Part Number: Skipping row 428
+No Part Number: Skipping row 429
+No Part Number: Skipping row 430
+No Part Number: Skipping row 437
+No Part Number: Skipping row 440
+No Part Number: Skipping row 441
+No Part Number: Skipping row 444
+No Part Number: Skipping row 489
+No Part Number: Skipping row 491
+No Part Number: Skipping row 507
 Malformed cell split: could not find both count and date on item #0628 back_stock8 :   
+No Part Number: Skipping row 525
+No Part Number: Skipping row 535
+No Part Number: Skipping row 537
 Malformed cell split: could not find both count and date on item #0974 back_stock4 :  d
-Malformed date split: date is improperly formatted on item #0998 inventory5 : /6/14/18
+No Part Number: Skipping row 545
+No Part Number: Skipping row 551
+No Part Number: Skipping row 554
+No Part Number: Skipping row 558
+No Part Number: Skipping row 559
+No Part Number: Skipping row 584
+No Part Number: Skipping row 585
+No Part Number: Skipping row 586
+No Part Number: Skipping row 587
+No Part Number: Skipping row 589
+No Part Number: Skipping row 607
+No Part Number: Skipping row 640
+No Part Number: Skipping row 646
+No Part Number: Skipping row 647
+No Part Number: Skipping row 648
+No Part Number: Skipping row 649
+No Part Number: Skipping row 650
+No Part Number: Skipping row 651
+No Part Number: Skipping row 652
+No Part Number: Skipping row 653
+No Part Number: Skipping row 654
+No Part Number: Skipping row 657
+No Part Number: Skipping row 682
+No Part Number: Skipping row 694
+No Part Number: Skipping row 697
+No Part Number: Skipping row 698
+No Part Number: Skipping row 699
+No Part Number: Skipping row 704
+No Part Number: Skipping row 705
+No Part Number: Skipping row 706
+No Part Number: Skipping row 707
+No Part Number: Skipping row 714
+No Part Number: Skipping row 715
+No Part Number: Skipping row 718
+No Part Number: Skipping row 719
+No Part Number: Skipping row 720
 Malformed cell split: could not find both count and date on item #0120 back_stock6 : 32
-Malformed date split: date is improperly formatted on item #1696 back_stock7 : 6/6/23F
+No Part Number: Skipping row 841
 Malformed cell split: could not find both count and date on item #1829 back_stock9 : 9
-Malformed cell split: could not find both count and date on item #2427 back_stock1 : 0"9/12/22
-Malformed cell split: could not find both count and date on item #1899 back_stock6 : 18:11:25/2020
-Malformed date split: date is improperly formatted on item #2276 back_stock2 : 11/23/20 -cs
 Malformed cell split: could not find both count and date on item #2337 back_stock1 :  
-Malformed date split: date is improperly formatted on item #2262 inventory3 : 1/818
 Malformed cell split: could not find both count and date on item #2025 back_stock1 : 0
-Malformed date split: date is improperly formatted on item #2155 back_stock4 : 11/23/20 -cs
-Malformed date split: date is improperly formatted on item #2470 back_stock3 : 11/23/20 -cs
-Malformed cell split: could not find both count and date on item #0875 inventory3 : 15:5/16:23
-Malformed date split: date is improperly formatted on item #2478 back_stock3 : 11/23/20 - cs
+No Part Number: Skipping row 1479
+No Part Number: Skipping row 1482
+No Part Number: Skipping row 1483
 Malformed cell split: could not find both count and date on item #5000 back_stock1 : 0
 Malformed cell split: could not find both count and date on item #5001 back_stock1 : 0
-Malformed date split: date is improperly formatted on item #6003 back_stock2 : 11/23/20 -cs
-Malformed date split: date is improperly formatted on item #6005 back_stock3 : 11/23/20 -cs
-Malformed date split: date is improperly formatted on item #6007 back_stock2 : 11/23/20 -cs
 Malformed cell split: could not find both count and date on item #6033 back_stock1 : 0
 Malformed cell split: could not find both count and date on item #6079 back_stock1 : 0
-Malformed date split: date is improperly formatted on item #6099 back_stock2 : 11/23/20 -cs
 Malformed cell split: could not find both count and date on item #6123 back_stock1 : 0
 Malformed cell split: could not find both count and date on item #6125 back_stock1 : 0
 Malformed cell split: could not find both count and date on item #6127 back_stock1 : 0
+No Part Number: Skipping row 1575
+No Part Number: Skipping row 1576
+No Part Number: Skipping row 1577
+No Part Number: Skipping row 1578
+No Part Number: Skipping row 1579
+No Part Number: Skipping row 1580
+No Part Number: Skipping row 1581
+No Part Number: Skipping row 1618
+No Part Number: Skipping row 1619
+No Part Number: Skipping row 1620
+No Part Number: Skipping row 1621
+No Part Number: Skipping row 1622
+No Part Number: Skipping row 1623
+No Part Number: Skipping row 1624
+No Part Number: Skipping row 1625
+No Part Number: Skipping row 1626
+No Part Number: Skipping row 1627
+No Part Number: Skipping row 1628

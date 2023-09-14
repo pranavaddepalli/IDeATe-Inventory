@@ -102,6 +102,9 @@ with open('data.csv', newline='') as csvfile:
 
     # Process the current line
     data = {}
+    currentLine['price_per'] = currentLine['price_per'].replace("$", "")
+    currentLine['price_per'] = currentLine['price_per'].replace(",", "")
+    currentLine['price_per'] = currentLine['price_per'].strip()
 
     ### Required Fields
     # *part_num: Listed as part_num in the CSV
@@ -166,6 +169,52 @@ with open('data.csv', newline='') as csvfile:
       data["purchase_link_history"] = { now_formatted : data["purchase_link_history"] }
 
     data_arr.append(data)
+
+
+# go through data_arr and find the latest supplier, price, inventory, backstock, and purchase_link
+for part in data_arr:
+  latest_supplier = ""
+    # sort supplier_history by date
+  if "supplier_history" in part:
+    supplier_history = part["supplier_history"]
+    sorted_supplier_history = sorted(supplier_history.items(), key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d %H:%M:%S"), reverse=True)
+    latest_supplier = sorted_supplier_history[0][1]
+  part["current_supplier"] = latest_supplier
+  
+
+  latest_price = -1
+  # sort price_history by date
+  if "price_history" in part:
+    # also strip all the price history values of the $
+    price_history = part["price_history"]
+    sorted_price_history = sorted(price_history.items(), key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d %H:%M:%S"), reverse=True)
+    latest_price = sorted_price_history[0][1]
+  part["current_price"] = latest_price
+  
+  latest_purchase_link = ""
+  # sort purchase_link_history by date
+  if "purchase_link_history" in part:
+    purchase_link_history = part["purchase_link_history"]
+    sorted_purchase_link_history = sorted(purchase_link_history.items(), key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d %H:%M:%S"), reverse=True)
+    latest_purchase_link = sorted_purchase_link_history[0][1]
+  part["current_purchase_link"] = latest_purchase_link
+
+  latest_inventory = -1
+  # sort inventory_history by date
+  if "inventory_history" in part:
+    inventory_history = part["inventory_history"]
+    sorted_inventory_history = sorted(inventory_history.items(), key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d %H:%M:%S"), reverse=True)
+    latest_inventory = sorted_inventory_history[0][1]
+  part["current_inventory"] = latest_inventory
+  
+  latest_backstock = -1
+  # sort backstock_history by date
+  if "backstock_history" in part:
+    backstock_history = part["backstock_history"]
+    sorted_backstock_history = sorted(backstock_history.items(), key=lambda x: datetime.datetime.strptime(x[0], "%Y-%m-%d %H:%M:%S"), reverse=True)
+    latest_backstock = sorted_backstock_history[0][1]
+  part["current_backstock"] = latest_backstock
+
 
 json_dump = json.dumps(data_arr, indent=4)
 with open('output.json', 'w') as outputFile:

@@ -108,12 +108,12 @@
 
         <% if (latest_supplier !== "No supplier history") { %>
     <div class="input-field">
-      <label for="newBackstock">Record new supplier:</label>
+      <label for="newSupplier">Record new supplier:</label>
       <input required id="newSupplier"  name="newSupplier" value="<%= latest_supplier %>">
     </div>
     <% } else { %>
       <div class="input-field">
-        <label for="newBackstock">Record new supplier:</label>
+        <label for="newSupplier">Record new supplier:</label>
         <input required id="newSupplier"  name="newSupplier">
       </div>
     <% } %>
@@ -175,16 +175,22 @@
           <label class="label" for="status">Status:</label>
           <span><%= part.status %></span>
         </div>
-    
-        <div class="input-field">
-          <label class="label" for="minQuantity">Min Quantity:</label>
-          <span><%= part.min_quantity %></span>
-        </div>
+        
+        <% if (part.min_quantity) { %>
+          <div class="input-field">
+            <label class="label" for="minQuantity">Min Quantity:</label>
+            <span><%= part.min_quantity %></span>
+          </div>
+        <% } %>
 
-        <div class="input-field">
-          <label class="label" for="maxQuantity">Max Quantity:</label>
-          <span><%= part.max_quantity %></span>
-        </div>
+
+        <% if (part.max_quantity) { %>
+          <div class="input-field">
+            <label class="label" for="maxQuantity">Max Quantity:</label>
+            <span><%= part.max_quantity %></span>
+          </div>
+        <% } %>
+        
     
         <div class="input-field">
           <label class="label" for="unit">Unit:</label>
@@ -240,8 +246,8 @@
         const inventory_values = <%- JSON.stringify(inventory_values) %>;
         const chartbackstock_dates = <%- JSON.stringify(chartbackstock_dates) %>;
         const backstock_values = <%- JSON.stringify(backstock_values) %>;
-        const minquantity = <%- JSON.stringify(minquantity) %>;
-        const maxquantity = <%- JSON.stringify(maxquantity) %>;
+        const minquantity = <%- JSON.stringify(minquantity) %> ?? -1;
+        const maxquantity = <%- JSON.stringify(maxquantity) %> ?? -1;
 
         const inventorybackstock_dates = [...new Set([...chartinventory_dates, ...chartbackstock_dates])];
         inventorybackstock_dates.sort();

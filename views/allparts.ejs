@@ -21,7 +21,17 @@
       border: 1px solid #ccc;
       padding: 10px;
     }
+  td {
+    padding: 0 35px;
+  }
+  td:nth-of-type(5) {
+    font-weight: bold;
+}
   </style>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0/dist/chartjs-adapter-moment.min.js"></script>
+
 </head>
 <body>
     <div class="part-info">
@@ -32,15 +42,30 @@
       </form>
     </div>
   <h1>All Parts</h1>
-  <ul>
-    <% (parts.sort((a, b) => a.part_num - b.part_num)).forEach(part => { %>
-      <li>
-        <a href="/parts?partNumber=<%= part.part_num %>">
-          <%= part.part_num %> -
-          <%= part.short_name %>
-        </a>
-      </li>
+  <table border=1 frame=void rules=rows>
+    <tr>
+      <th> Part Number </th>
+      <th> Short Name </th>
+      <th> On Hand </th>
+      <th> Min </th>
+      <th> # To Restock </th>
+      <th> </th>
+      <th> Inventory </th>
+      <th> Backstock </th>
+      </tr>
+      <% parts.sort((a, b) => ((a.current_backstock + a.current_inventory) - a.min_quantity) - ((b.current_backstock + b.current_inventory) - b.min_quantity)).forEach(part => { %>
+        <tr>
+        <td> <a href="/parts?partNumber=<%= part.part_num %>"><%= part.part_num %></a> </td>
+        <td> <%= part.short_name %></td>
+        <td> <%= part.current_inventory + part.current_backstock %> </td>
+        <td> <%= part.min_quantity %> </td>
+        <td> <%= 0-((part.current_backstock + part.current_inventory) - part.min_quantity) %> </td>
+        <td></td>
+        <td> <%= part.current_inventory %> </td>
+        <td> <%= part.current_backstock %> </td>
+
+      </tr>
     <% }); %>
-  </ul>
+    </table>
 </body>
 </html>

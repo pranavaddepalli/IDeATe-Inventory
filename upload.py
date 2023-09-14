@@ -1,124 +1,175 @@
 import csv
+import datetime
 import json
-from datetime import datetime
+import string
 
-# Define the input and output file paths
-input_csv_file = 'FINAL Inventory - Phys Comp Lab.csv'
-output_json_file = 'processed_inventory_data1.json'
+log_message = ""
 
-# Define the columns to extract from the original CSV
-columns_to_extract = [
-    'part_num', 'short_name', 'status', 'location', 'unit', 'min_quantity', 'max_quantity',
-    'inventory1', 'inventory2', 'inventory3', 'inventory4', 'inventory5', 'inventory6',
-    'inventory7', 'inventory8', 'inventory9', 'inventory10', 'inventory11', 'inventory12',
-    'inventory13', 'inventory14', 'inventory15', 'inventory16', 'inventory17', 'inventory18',
-    'inventory19', 'inventory20', 'back_stock1', 'back_stock2', 'back_stock3', 'back_stock4',
-    'back_stock5', 'back_stock6', 'back_stock7', 'back_stock8', 'back_stock9', 'back_stock10',
-    'back_stock11', 'back_stock12', 'back_stock13', 'back_stock14', 'back_stock15', 'back_stock16',
-    'back_stock17', 'back_stock18', 'back_stock19', 'back_stock20', 'price_per', 'supplier', 'purchase_link'
-]
+def parse_col_normal(data, linedata, field, og_field='', required=False, default_val=''):
+  global log_message
 
-# Read the original CSV and process the data
-processed_data = []
-with open(input_csv_file, 'r', newline='', encoding='utf-8') as csv_file:
-    csv_reader = csv.DictReader(csv_file)
+  if len(og_field) == 0:
+    og_field = field
+
+  actual_data = linedata[og_field]
+  if len(actual_data) == 0:
+    if required:
+      data[field] = default_val
+
+    # o.w skip field for not existing
+    return data
+
+  data[field] = actual_data
+  return data
+
+def parse_col_dictionary(data, linedata, field, og_field):
+  global log_message
+
+  dictionary = {}
+  i = 1
+  col_name = og_field + str(i)
+  while col_name in linedata:
+    cell = linedata[col_name]
+
+    if len(cell) == 0:
+      i += 1
+      col_name = og_field + str(i)
+      continue
+
+    cellSplit = cell.split(":")
+    if len(cellSplit) != 2:
+      # malformed cell; skip
+      log_message += f"Malformed cell split: could not find both count and date on item #{linedata['part_num']} {col_name} : {cell}\n"
+
+      i += 1
+      col_name = og_field + str(i)
+      continue
     
-    # Skip the first 2 rows
-    next(csv_reader)
-    next(csv_reader)
+    count, date = cellSplit
+
+    if not count.isdigit():
+      count = "0"
+
+    # format date
+    date = date.strip()
+    split_date = date.split("/")
+
+    if len(split_date) != 3 or not (split_date[0].isdigit() and split_date[1].isdigit() and split_date[2].isdigit()):
+      # malformed date; skip
+      log_message += f"Malformed date split: date is improperly formatted on item #{linedata['part_num']} {col_name} : {date}\n"
+
+      i += 1
+      col_name = og_field + str(i)
+      continue
+
+    month = int(split_date[0])
+    day = int(split_date[1])
+    year = int(split_date[2])
+
+    if year < 2000:
+      year += 2000
+
+    date_real = datetime.datetime(year, month, day)
+    date_formatted = date_real.strftime("%Y-%m-%d %H:%M:%S")
+
+    dictionary[date_formatted] = count
+
+    i += 1
+    col_name = og_field + str(i)
+  
+  if len(dictionary) == 0:
+    now_formatted = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data[field] = { now_formatted : "-1" }
+  else:
+    data[field] = dictionary
+
+  return data
+
+
+data_arr = []
+brokenLines = []
+firstLine = True
+lineNum = 0
+with open('data.csv', newline='') as csvfile:
+  csvreader = csv.DictReader(csvfile)
+  for currentLine in csvreader:
+    lineNum += 1
+
+    if firstLine:
+      # skip first line of column descriptions
+      firstLine = False
+      continue
+
+    # Process the current line
+    data = {}
+
+    ### Required Fields
+    # *part_num: Listed as part_num in the CSV
+    # *short_name: Listed as short_name in the CSV
+    # *status: either Active, Currently Unavailable, To Discontinue, or Discontinued. Listed as status
+    # *location: Listed as location
+    # *unit: Listed as unit
+    data = parse_col_normal(data, currentLine, "part_num")
+
+    if "part_num" not in data:
+      log_message += f"No Part Number: Skipping row {lineNum}\n"
+      continue
+
+    data = parse_col_normal(data, currentLine, "short_name", required=True)
+    data = parse_col_normal(data, currentLine, "status", required=True, default_val="Active")
+    data = parse_col_normal(data, currentLine, "location", required=True, default_val="no location")
+    data = parse_col_normal(data, currentLine, "unit", required=True, default_val="each")
+
+    if len(data["part_num"]) == 0 and len(data["short_name"]) == 0 and len(data["status"]) == 0 and len(data["location"]) == 0 and len(data["unit"]) == 0:
+      # empty row - skip
+      continue
+
+    data["status"] = string.capwords(data["status"])
+
+    # description: Listed as description
+    # min_quantity: Listed as min_quantity
+    # max_quantity: Listed as max_quantity
+    # supplier_part_num: Listed as supplier_part_num
+    # label_text: Listed as label_text
+    data = parse_col_normal(data, currentLine, "description")
+    data = parse_col_normal(data, currentLine, "min_quantity")
+    data = parse_col_normal(data, currentLine, "max_quantity")
+    data = parse_col_normal(data, currentLine, "supplier_part_num", og_field="supplier_part_number")
+    data = parse_col_normal(data, currentLine, "label_text")
+
+    if "min_quantity" in data and not data["min_quantity"].isdigit():
+      data["min_quantity"] = "0"
+    if "max_quantity" in data and not data["max_quantity"].isdigit():
+      data["max_quantity"] = "0"
+
+    # inventory_history: a JSON thing that has key = date as string as "YYYY-MM-DD HH:MM:SS" and value as the inventory number in a string for that date. You will have to create an inventory history for each part by parsing and combining the values from each of the inventory1, inventory2, inventory3,... columns
+    # backstock_history: same as above but with backstock
+    data = parse_col_dictionary(data, currentLine, "inventory_history", "inventory")
+    data = parse_col_dictionary(data, currentLine, "backstock_history", "back_stock")
     
-    for row in csv_reader:
-        processed_row = {
-            'part_num': row['part_num'],
-            'short_name': row['short_name'],
-            'status': row['status'],
-            'location': row['location'],
-            'unit': row['unit'],
-            'min_quantity': row['min_quantity'],
-            'max_quantity': row['max_quantity'],
-            'description': row['description']
-        }
+    # price_history: same as above, but there's only one price (Listed as price_per). Just take today's date
+    # supplier_history: same as price. Listed as supplier. Use today's date
+    # purchase_link_history: same as price. Listed as purchase_link. Use today's date.
+    data = parse_col_normal(data, currentLine, "price_history", "price_per")
+    data = parse_col_normal(data, currentLine, "supplier_history", "supplier")
+    data = parse_col_normal(data, currentLine, "purchase_link_history", "purchase_link")
+    
+    now_formatted = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # Process inventory history and backstock history
-        inventory_history = {}
-        backstock_history = {}
-        bads = []
-        for i in range(1, 21):
-            inventory_key = f'inventory{i}'
-            inventory_value = row[inventory_key]
-            backstock_key = f'back_stock{i}'
-            backstock_value = row[backstock_key]
+    if "price_history" in data:
+      data["price_history"] = { now_formatted : data["price_history"] }
+    
+    if "supplier_history" in data:
+      data["supplier_history"] = { now_formatted : data["supplier_history"] }
 
+    if "purchase_link_history" in data:
+      data["purchase_link_history"] = { now_formatted : data["purchase_link_history"] }
 
-            if inventory_value:
-                components = inventory_value.split(':')
-                if(len(components) == 2):
-                    print(components)
-                    if(components[0] == "lending"):
-                        value = "0"
-                    else:
-                        value = int(components[0])
-                    date_str = components[1]
-                
-                # if '/' in date_str:  # Handle date with separator (e.g., '6/7/18')
-                #     year = int(date_str.split('/')[-1])
-                #     if year < 50:  # Adjust for two-digit year conversion
-                #         year += 2000
-                #     else:
-                #         year += 1900
-                #     month, day = map(int, date_str.split('/')[:2])
-                # else:  # Handle date without separator (e.g., '61918')
-                #     year = int(date_str[-2:])
-                #     if year < 50:  # Adjust for two-digit year conversion
-                #         year += 2000
-                #     else:
-                #         year += 1900
-                #     month = int(date_str[:-4])
-                #     day = int(date_str[-4:-2])
-                
-            #     date_obj = datetime(year, month, day, 12, 0, 0)
-            #     inventory_history[date_obj.strftime('%Y-%m-%d %H:%M:%S')] = value
-                
-            # if backstock_value:
-            #     components = backstock_value.split(':')
-            #     value = int(components[0])
-            #     date_str = components[1]
-                
-            #     if '/' in date_str:  # Handle date with separator
-            #         year = int(date_str.split('/')[-1])
-            #         if year < 50:  # Adjust for two-digit year conversion
-            #             year += 2000
-            #         else:
-            #             year += 1900
-            #         month, day = map(int, date_str.split('/')[:2])
-            #     else:  # Handle date without separator
-            #         year = int(date_str[-2:])
-            #         if year < 50:  # Adjust for two-digit year conversion
-            #             year += 2000
-            #         else:
-            #             year += 1900
-            #         month = int(date_str[:-4])
-            #         day = int(date_str[-4:-2])
-                
-            #     date_obj = datetime(year, month, day, 12, 0, 0)
-            #     backstock_history[date_obj.strftime('%Y-%m-%d %H:%M:%S')] = value
+    data_arr.append(data)
 
-        processed_row['inventory history'] = inventory_history
-        processed_row['backstock history'] = backstock_history
+json_dump = json.dumps(data_arr, indent=4)
+with open('output.json', 'w') as outputFile:
+  outputFile.write(json_dump)  
 
-        # Process price history, supplier history, and purchase link history (as before)
-        current_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        price_history = {current_date: row['price_per']}
-        supplier_history = {current_date: row['supplier']}
-        purchase_link_history = {current_date: row['purchase_link']}
-        processed_row['price_history'] = price_history
-        processed_row['supplier_history'] = supplier_history
-        processed_row['purchase_link_history'] = purchase_link_history
-
-        processed_data.append(processed_row)
-
-# Write the processed data to a new JSON file
-with open(output_json_file, 'w', encoding='utf-8') as json_file:
-    json.dump(processed_data, json_file, indent=2)
-
-print("Processed data has been written to", output_json_file)
+with open('log.txt', 'w') as outputFile:
+  outputFile.write(log_message)

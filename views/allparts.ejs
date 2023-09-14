@@ -24,18 +24,21 @@
   </style>
 </head>
 <body>
-    <div class = "part-info">
+    <div class="part-info">
         <br>
-     <form action="/parts" method="GET">
+      <form action="/parts" method="GET">
         <input type="text" name="partNumber" placeholder="Enter Part Number">
         <button type="submit">Search</button>
       </form>
     </div>
   <h1>All Parts</h1>
   <ul>
-    <% parts.forEach(part => { %>
+    <% (parts.sort((a, b) => a.part_num - b.part_num)).forEach(part => { %>
       <li>
-        <a href="/parts?partNumber=<%= part.part_num %>"><%= part.short_name %></a>
+        <a href="/parts?partNumber=<%= part.part_num %>">
+          <%= part.part_num %> -
+          <%= part.short_name %>
+        </a>
       </li>
     <% }); %>
   </ul>

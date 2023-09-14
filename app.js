@@ -55,7 +55,7 @@ app.get('/parts', (req, res) => {
   const partNumber = req.query.partNumber;
 
   if (!/^\d+$/.test(partNumber)) {
-    axios.get(`${iorefURL}/items/parts/?access_token=${accessToken}`)
+    axios.get(`${iorefURL}/items/parts/?access_token=${accessToken}&limit=-1`)
     .then(response => {
       const parts = response.data.data;
       if (parts.length === 0) {

@@ -1,0 +1,34 @@
+Malformed date split: date is improperly formatted on item #0322 inventory5 : 
+Malformed cell split: could not find both count and date on item #0340 inventory6 : 55/7/29/19
+Malformed date split: date is improperly formatted on item #0356 back_stock6 : (0inA5)11/30/2020
+Malformed cell split: could not find both count and date on item # inventory1 : #REF!
+Malformed cell split: could not find both count and date on item # inventory2 : #REF!
+Malformed date split: date is improperly formatted on item #0696 back_stock4 : RECOUNT
+Malformed date split: date is improperly formatted on item #0874 inventory13 : 3/220
+Malformed cell split: could not find both count and date on item #0628 back_stock8 :   
+Malformed cell split: could not find both count and date on item #0974 back_stock4 :  d
+Malformed date split: date is improperly formatted on item #0998 inventory5 : /6/14/18
+Malformed cell split: could not find both count and date on item #0120 back_stock6 : 32
+Malformed date split: date is improperly formatted on item #1696 back_stock7 : 6/6/23F
+Malformed cell split: could not find both count and date on item #1829 back_stock9 : 9
+Malformed cell split: could not find both count and date on item #2427 back_stock1 : 0"9/12/22
+Malformed cell split: could not find both count and date on item #1899 back_stock6 : 18:11:25/2020
+Malformed date split: date is improperly formatted on item #2276 back_stock2 : 11/23/20 -cs
+Malformed cell split: could not find both count and date on item #2337 back_stock1 :  
+Malformed date split: date is improperly formatted on item #2262 inventory3 : 1/818
+Malformed cell split: could not find both count and date on item #2025 back_stock1 : 0
+Malformed date split: date is improperly formatted on item #2155 back_stock4 : 11/23/20 -cs
+Malformed date split: date is improperly formatted on item #2470 back_stock3 : 11/23/20 -cs
+Malformed cell split: could not find both count and date on item #0875 inventory3 : 15:5/16:23
+Malformed date split: date is improperly formatted on item #2478 back_stock3 : 11/23/20 - cs
+Malformed cell split: could not find both count and date on item #5000 back_stock1 : 0
+Malformed cell split: could not find both count and date on item #5001 back_stock1 : 0
+Malformed date split: date is improperly formatted on item #6003 back_stock2 : 11/23/20 -cs
+Malformed date split: date is improperly formatted on item #6005 back_stock3 : 11/23/20 -cs
+Malformed date split: date is improperly formatted on item #6007 back_stock2 : 11/23/20 -cs
+Malformed cell split: could not find both count and date on item #6033 back_stock1 : 0
+Malformed cell split: could not find both count and date on item #6079 back_stock1 : 0
+Malformed date split: date is improperly formatted on item #6099 back_stock2 : 11/23/20 -cs
+Malformed cell split: could not find both count and date on item #6123 back_stock1 : 0
+Malformed cell split: could not find both count and date on item #6125 back_stock1 : 0
+Malformed cell split: could not find both count and date on item #6127 back_stock1 : 0

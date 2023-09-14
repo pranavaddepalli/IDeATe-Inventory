@@ -205,7 +205,7 @@
 
         <div class="input-field">
           <label class="label" for="inventoryHistory">Inventory History:</label>
-          <pre><code><%= JSON.stringify(part.inventory_history, null, 2) %></code></pre>
+          <pre><code><%= JSON.stringify(part.inventory_history.reverse, null, 2) %></code></pre>
         </div>
         
         <div class="input-field">
